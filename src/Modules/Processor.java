@@ -363,8 +363,16 @@ public class Processor {
 		printer.deleteCharAt(printer.length() - 1);
 		printer.append("\n");
 		printer.append("Memory { ");
+		int i = 0;
 		for (int memoryWord : memory)
-			printer.append(memoryWord + ", ");
+			printer.append("Address " + i++ + ": " + memoryWord + ", ");
+		printer.deleteCharAt(printer.length() - 1);
+		printer.append(" }");
+		printer.append("\n");
+		printer.append("Memory In Binary Format { ");
+		i = 0;
+		for (int memoryWord : memory)
+			printer.append("Address " + i++ + ": " + Integer.toBinaryString(memoryWord) + ", ");
 		printer.deleteCharAt(printer.length() - 1);
 		printer.append(" }");
 		System.out.println(printer);
