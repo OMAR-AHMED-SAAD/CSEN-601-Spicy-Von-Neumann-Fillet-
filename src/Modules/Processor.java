@@ -101,7 +101,8 @@ public class Processor {
 			for (Instruction instr : runningInstructions) {
 				String stageName = instr.stages.pop();
 				runStage(stageName);
-				printer.insert(0, "\n" + instr.instruction + " is in " + stageName + "Stage" + "\n");
+				printer.insert(0,
+						"\n" + Integer.toBinaryString(instr.instruction) + " is in " + stageName + "Stage" + "\n");
 				if (stageName.equals("WB"))
 					instr.removeFlag = true;
 				if (flush && stageName.equals("EX")) {
@@ -152,11 +153,12 @@ public class Processor {
 		else
 			fetchedInstruction = memory[pc++];
 		if (flush)
-			printer.insert(0, "\n" + fetchedInstruction + " is in IF Stage\ninput parameters: PC " + oldPc
-					+ " ,output parameters: PC " + (oldPc + 1) + "\n");
+			printer.insert(0,
+					"\n" + Integer.toBinaryString(fetchedInstruction) + " is in IF Stage\ninput parameters: PC " + oldPc
+							+ " ,output parameters: PC " + (oldPc + 1) + "\n");
 		else
-			printer.insert(0, "\n" + fetchedInstruction + " is in IF Stage\ninput parameters: PC " + (pc - 1)
-					+ " ,output parameters: PC " + (pc) + "\n");
+			printer.insert(0, "\n" + Integer.toBinaryString(fetchedInstruction)
+					+ " is in IF Stage\ninput parameters: PC " + (pc - 1) + " ,output parameters: PC " + (pc) + "\n");
 
 		oldPc = pc;
 	}
@@ -358,21 +360,30 @@ public class Processor {
 
 	public void print() {
 		printer = new StringBuffer();
+		printer.append("\n");
+		printer.append("Register File { ");
 		for (int i = 0; i < registerFile.length; i++)
 			printer.append("Register " + i + ": ").append(registerFile[i]).append(", ");
 		printer.deleteCharAt(printer.length() - 1);
+		printer.append(" }");
 		printer.append("\n");
 		printer.append("Memory { ");
-		int i = 0;
+		int j = 0;
 		for (int memoryWord : memory)
-			printer.append("Address " + i++ + ": " + memoryWord + ", ");
+			printer.append("Address " + j++ + ": " + memoryWord + ", ");
+		printer.deleteCharAt(printer.length() - 1);
+		printer.append(" }");
+		printer.append("\n");
+		printer.append("Register File In Binary Format { ");
+		for (int i = 0; i < registerFile.length; i++)
+			printer.append("Register " + i + ": ").append(Integer.toBinaryString(registerFile[i])).append(", ");
 		printer.deleteCharAt(printer.length() - 1);
 		printer.append(" }");
 		printer.append("\n");
 		printer.append("Memory In Binary Format { ");
-		i = 0;
+		j = 0;
 		for (int memoryWord : memory)
-			printer.append("Address " + i++ + ": " + Integer.toBinaryString(memoryWord) + ", ");
+			printer.append("Address " + j++ + ": " + Integer.toBinaryString(memoryWord) + ", ");
 		printer.deleteCharAt(printer.length() - 1);
 		printer.append(" }");
 		System.out.println(printer);
