@@ -184,19 +184,19 @@ public class Processor {
 		int r3Value = registerFile[register3];
 		String forwarding = "";
 		if (EX.get("dest") != null && EX.get("dest") == register2 && register2 != 0 && EX.get("regWrite") != null
-				&& EX.get("regWrite") == 1) {
+				&& EX.get("regWrite") == 1 && EX.get("opCode")!=10) {
 			r2Value = EX.get("aluResult");
 			forwarding += "Register" + register2
 					+ " decoded Vlaue is changed due to forwarding and detected in decode since it's not a LW \n";
 		}
 		if (EX.get("dest") != null && EX.get("dest") == register3 && register3 != 0 && EX.get("regWrite") != null
-				&& EX.get("regWrite") == 1) {
+				&& EX.get("regWrite") == 1 && EX.get("opCode")!=10) {
 			r3Value = EX.get("aluResult");
 			forwarding += "Register" + register3
 					+ " decoded Vlaue is changed due to forwarding and detected in decode since it's not a LW \n";
 		}
 		if (EX.get("dest") != null && EX.get("dest") == register1 && (opcode == 4 || opcode == 11) && register1 != 0
-				&& EX.get("regWrite") != null && EX.get("regWrite") == 1) {
+				&& EX.get("regWrite") != null && EX.get("regWrite") == 1 && EX.get("opCode")!=10) {
 			r1Value = EX.get("aluResult");
 			forwarding += "Register" + register1
 					+ " decoded Vlaue is changed due to forwarding and detected in decode since it's not a LW \n";
@@ -302,6 +302,8 @@ public class Processor {
 		EX.put("dest", ID.get("dest"));
 		EX.put("regWrite", ID.get("regWrite"));
 		EX.put("aluResult", alu.getAluValue());
+		EX.put("opCode", ID.get("opCode"));
+
 		if (ID.get("opCode") == 7) {// jump
 			int jumpPc = ID.get("pc") & (int) (Math.pow(2, 4) - 1) << 28;
 			this.pc = jumpPc | ID.get("address");

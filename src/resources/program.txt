@@ -1,3 +1,5 @@
-addi r1 r0 402
-sw r1 r2 1024
-lw r3 r0 1024
+addi r1 r2 2
+addi r2 r0 7
+J 5
+addi r3 r0 9
+sub r2 r2 r1
